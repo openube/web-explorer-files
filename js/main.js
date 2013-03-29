@@ -108,7 +108,7 @@ jQuery(document).ready(function($) {
 				for(var i=0;i<json.length;i++){
 					var elem = null;
 					if(json[i].type === "folder")
-						elem = '<li><strong><a href="#folder">'+json[i].name+'</a></strong></li>';
+						elem = '<li><a href="#folder" class="folder">'+json[i].name+'</a></li>';
 					if(json[i].type === "file")
 						elem = '<li><a href="#file">'+json[i].name+'</a></li>';
 
