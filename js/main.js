@@ -109,12 +109,28 @@ jQuery(document).ready(function($) {
 			else{
 				$(".content-file").slideUp('fast',function(){
 					$('.file-list').html("");
+					var folders = new Array();
+
+					// ** FOLDERS
 					for(var i=0;i<json.length;i++){
-						var elem = null;
 						if(json[i].type === "folder")
-							elem = '<li><a href="#folder" class="folder">'+json[i].name+'</a></li>';
+							folders.push(json[i].name);
+					}
+					for(var i=0;i<folders.length;i++){
+						folders.sort();
+						var elem = '<li><a href="#folder" class="folder">'+folders[i]+'</a></li>';
+
+						$('.file-list').append(elem);
+					}
+					// ** FILES
+					var files = new Array();
+					for(var i=0;i<json.length;i++){
 						if(json[i].type === "file")
-							elem = '<li><a href="#file">'+json[i].name+'</a></li>';
+							files.push(json[i].name);
+					}
+					for(var i=0;i<files.length;i++){
+						files.sort();
+						var elem = '<li><a href="#file">'+files[i]+'</a></li>';
 
 						$('.file-list').append(elem);
 					}
