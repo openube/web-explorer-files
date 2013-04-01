@@ -13,6 +13,13 @@
 				<h1>Web File Explorer</h1>
 			</div>
 		</div>
+		<div class="row-fluid" id="error">
+			<div class="span12">
+				<div class="alert alert-error">
+					<strong>Errors : </strong><span></span>
+				</div>
+			</div>
+		</div>
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb"></ul>
@@ -23,7 +30,6 @@
 				<!-- file list -->
 				<p>File List :</p>
 				<ul class="nav nav-list file-list"></ul>
-				<hr>
 				<!-- code -->
 				<pre class="content-file"></pre>
 			</div>

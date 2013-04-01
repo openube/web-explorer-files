@@ -103,19 +103,25 @@ jQuery(document).ready(function($) {
 			return path;
 		}
 		function constructFileList(json){
-			$(".content-file").slideUp('fast',function(){
-				$('.file-list').html("");
-				for(var i=0;i<json.length;i++){
-					var elem = null;
-					if(json[i].type === "folder")
-						elem = '<li><a href="#folder" class="folder">'+json[i].name+'</a></li>';
-					if(json[i].type === "file")
-						elem = '<li><a href="#file">'+json[i].name+'</a></li>';
+			// Errors Gestion
+			if(json.error)
+				showErrors(json.error);
+			else{
+				$(".content-file").slideUp('fast',function(){
+					$('.file-list').html("");
+					for(var i=0;i<json.length;i++){
+						var elem = null;
+						if(json[i].type === "folder")
+							elem = '<li><a href="#folder" class="folder">'+json[i].name+'</a></li>';
+						if(json[i].type === "file")
+							elem = '<li><a href="#file">'+json[i].name+'</a></li>';
 
-					$('.file-list').append(elem);
-				}
-			});
+						$('.file-list').append(elem);
+					}
+				});
+			}
 		}
+
 		function constructContentFile(json){
 			$(".content-file").html("");
 
@@ -127,4 +133,9 @@ jQuery(document).ready(function($) {
 			console.log(html_code);
 			
 			$(".content-file").html(html_code).slideDown();
+		}
+
+		function showErrors(message){
+			$("#error .span12 .alert span").text(message);
+			$("#error").slideDown(500).delay(5000).slideUp(500);
 		}

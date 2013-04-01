@@ -1,6 +1,8 @@
 <?php
 	header('Content-type: application/json');
 
+	define("PATH_ROOT", '../');
+
 	if(isset($_POST['action'])){
 		
 		if($_POST['action'] == "getContentFile"){ echo getContentFile($_POST['file_name'],$_POST['file_path']);}
@@ -10,8 +12,7 @@
 	function getContentFile($file_name, $file_path){
 		$return = array();
 
-		$path_root = '../';
-		$path = $path_root.$file_path.$file_name;
+		$path = PATH_ROOT.$file_path.$file_name;
 		
 		$ext_tab = split('\.',$file_name);
 		$ext = $ext_tab[count($ext_tab)-1];
@@ -26,23 +27,33 @@
 	function getListFiles($path){
 		$returns = array();
 
-		$d = dir("../".$path);
-		$i=0;
-		while($entry = $d->read()) {
-			if($entry != "." && $entry != ".."){
-				if(stripos($entry,".") != false) //file
-					$return["type"] = "file";	
-				else
-					$return["type"] = "folder";
-			    
-			    $return["name"] = $entry;
+		if(preg_match("/\b..\b/", substr($path, 3)) == 0)
+			$returns['error'] = "Path Error : content '..' in path file ".$path;
+		if(!is_dir(PATH_ROOT.$path))
+			$returns['error'] = 'opening folder failed, folder does\'n exist';
+		else{
+			try{
+				$d = dir(PATH_ROOT.$path);
+				$i=0;
+				while($entry = $d->read()) {
+					if($entry != "." && $entry != ".."){
+						if(stripos($entry,".") != false) //file
+							$return["type"] = "file";	
+						else
+							$return["type"] = "folder";
+					    
+					    $return["name"] = $entry;
 
-			   	$returns[] = $return;
-			   	unset($return);
+					   	$returns[] = $return;
+					   	unset($return);
+					}
+				    $i++;
+				}
+				$d->close();
+			} catch(Exception $e){
+				$returns['error'] = $e->getMessages();
 			}
-		    $i++;
 		}
-		$d->close();
 		return json_encode($returns);
 	}
 ?>
